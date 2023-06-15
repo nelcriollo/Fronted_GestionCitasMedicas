@@ -9,17 +9,35 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import { AuthContext } from './AuthContext';
+import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import NextLink from 'next/link';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const pages = ['Especialidades', 'Medicos', 'Contactanos'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [{nombre:'Especialidades',ruta:'/especialidades'},{ nombre:'Medicos',ruta:'/medicos'},{ nombre:'Contactanos',ruta:'/contactanos'}];
+const settings = [{nombre:'Perfil',ruta:'/perfil'}, {nombre:'citas',ruta:'/reservas/listar'}, {nombre:'Logout',ruta:'/usuarios/login'}];
+
 
 export function HeaderAppBar() {
+
+  const { loggedIn, setLoggedIn } = useContext(AuthContext);
+
+/*useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    setLoggedIn(true);
+  }
+}, []);*/
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -36,28 +54,30 @@ export function HeaderAppBar() {
     setAnchorElUser(null);
   };
 
+
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ mb:5 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+
+          <NextLink href="/" passHref style={{textDecoration:'none', color:'#ffffff'}}>
+            <Typography
+              variant="h5"
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              GESTIMEDIC
+            </Typography>
+        </NextLink>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -89,8 +109,10 @@ export function HeaderAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.nombre}>   
+                  <Link key={page.ruta} href={page.ruta} style={{textDecoration:'none'}}> 
+                  <Typography textAlign="center" >{page.nombre}</Typography>
+                  </Link>      
                 </MenuItem>
               ))}
             </Menu>
@@ -112,51 +134,72 @@ export function HeaderAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            GESTIMEDIC
           </Typography>
         
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-               component="a"
-               href={page}
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link key={page.ruta} href={page.ruta} style={{textDecoration:'none'}}> 
+                  <Typography textAlign="center" 
+                  style={{ margin: '10px', color: 'white', 
+                  display: 'block',textDecoration: 'none',
+                  fontFamily:'sans-serif',fontSize:20 }} >{page.nombre}</Typography>
+              </Link>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {loggedIn ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="user img"> <AccountCircleIcon /></Avatar>
+               
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Link href="/usuarios/login">
+                <Button color="inherit" >Iniciar sesión</Button>
+              </Link>
+            )}
+           <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu} 
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting.nombre} onClick={handleCloseUserMenu}> 
+                    {setting.nombre === 'Logout' ? (
+                      <Link
+                        key={setting.ruta}
+                        href={setting.ruta}
+                        style={{ textDecoration: 'none' }}
+                        onClick={() => {
+                          router.push('/usuarios/login');
+                          localStorage.removeItem('token');
+                          setLoggedIn(false);
+                        }}
+                      >
+                        <Typography textAlign="center">{setting.nombre}</Typography>
+                      </Link>
+                    ) : (
+                      <Link key={setting.ruta} href={setting.ruta} style={{ textDecoration: 'none' }}>
+                        <Typography textAlign="center">{setting.nombre}</Typography>
+                      </Link>
+                    )}
+                  </MenuItem>
+                ))}
+              </Menu>
           </Box>
         </Toolbar>
       </Container>
