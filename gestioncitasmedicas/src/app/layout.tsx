@@ -1,6 +1,8 @@
-import { red } from "@mui/material/colors";
+"use client";
+import { useEffect, useState } from "react";
 import "./globals.css";
 import { HeaderAppBar } from "./header";
+import { AuthProvider } from "./AuthContext";
 
 
 export const metadata = {
@@ -8,25 +10,29 @@ export const metadata = {
   description: 'Gestión de reserva de citas Médicas',
 }
 
-
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+ 
+
   return (
+    <AuthProvider>
     <html lang="es">
       
       <body >
         <header>
-          <HeaderAppBar />
+        <HeaderAppBar/>
+        
         </header>
         <main>
           {children}
         </main>
-        <footer> </footer>
+       
         </body>
     </html>
+    </AuthProvider>
   )
 }
