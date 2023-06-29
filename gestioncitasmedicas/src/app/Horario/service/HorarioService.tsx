@@ -30,7 +30,7 @@ class HorarioService {
 
   async updateHorario(horario:Horario) {
     try {
-      const response = await axiosInstance.post('/', horario, {
+      const response = await axiosInstance.put('/', horario, {
         headers: {
           'Content-Type': 'application/json',
         },

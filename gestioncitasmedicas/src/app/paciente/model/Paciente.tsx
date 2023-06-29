@@ -4,7 +4,7 @@ export default class Paciente{
     idPaciente: number;
     nombre:string;
     apellidos:string;
-    fechaNacimiento:Date;
+    fechaNacimiento:Date | null;;
     nroDocumento:string;
     email:string;
     telefono:string;
@@ -14,7 +14,7 @@ export default class Paciente{
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.fechaNacimiento = fechaNacimiento;
+        this.fechaNacimiento = new Date();
         this.nroDocumento = nroDocumento;
         this.email = email;
         this.telefono = telefono;

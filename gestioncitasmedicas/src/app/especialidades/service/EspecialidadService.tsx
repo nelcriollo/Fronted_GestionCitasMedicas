@@ -31,7 +31,7 @@ class EspecialidadService {
 
   async updateEspecialidad(especialidad:Especialidad) {
     try {
-      const response = await axiosInstance.post('/', especialidad, {
+      const response = await axiosInstance.put('/', especialidad, {
         headers: {
           'Content-Type': 'application/json',
         },
