@@ -6,9 +6,10 @@ import AuthenCredentials  from '../model/UsuarioLogin';
 import UsuarioService from '../services/UsuarioService';
 import { AuthContext } from '@/app/AuthContext';
 
+
 export const LoginComponent = () => {
 
-  const { loggedIn, setLoggedIn } = useContext(AuthContext);
+  const { loggedIn, setLoggedIn, setLoginResponse } = useContext(AuthContext);
   const router = useRouter();
   const usuarioService = new UsuarioService();
   const [credentials, setCredentials] = useState<AuthenCredentials>({
@@ -25,8 +26,9 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
    if(response){ 
     router.push('/');
     setLoggedIn(true);
+    setLoginResponse(response.data);
     console.info("logue exitoso!, estdo",loggedIn);
-
+    console.info(response);
    }else router.push('usuarios/login');
   } catch (error) {
     // Manejar errores de la solicitud

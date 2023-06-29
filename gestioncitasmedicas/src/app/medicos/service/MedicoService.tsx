@@ -30,7 +30,7 @@ class MedicoService {
 
   async updateMedico(medico:Medico) {
     try {
-      const response = await axiosInstance.post('/', medico, {
+      const response = await axiosInstance.put('/', medico, {
         headers: {
           'Content-Type': 'application/json',
         },

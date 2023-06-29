@@ -9,14 +9,16 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { AuthContext } from "@/app/AuthContext";
 import { RegistrarPacienteComponent } from "@/app/paciente/components/Paciente";
-//import { RegistrarPacienteComponent } from "@/app/paciente/components/Paciente";
+import { RegistrarReservaComponent } from "../components/RegistrarReserva";
+
 
 
 const steps = [
   'Servicio',
   'Especialidad',
   'Doctor',
-  'Registro'
+  'Paciente',
+  'ReservaCita'
 ];
 
 export default  function Reservas(){
@@ -39,10 +41,14 @@ export default  function Reservas(){
         return <ListEspecialidadesComponent onNextStep={handleNextStep} />;
       case 1:
        return <ListHorariosMedicosComponent 
-              especialidadSeleccionada={especialidadSeleccionada} 
-              onNextStep={handleNextStep} onPreviousStep={handlePreviousStep}/>
+         especialidadSeleccionada={especialidadSeleccionada}
+         onNextStep={handleNextStep} onPreviousStep={handlePreviousStep}/>
       case 2:
-          return <RegistrarPacienteComponent />;
+          return <RegistrarPacienteComponent
+          onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} />;
+          case 3:
+          return <RegistrarReservaComponent
+          onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} />;
         default:
           return null;
     }

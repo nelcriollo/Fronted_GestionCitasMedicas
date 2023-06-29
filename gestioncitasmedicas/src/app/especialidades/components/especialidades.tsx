@@ -11,7 +11,7 @@ import { AuthContext } from "@/app/AuthContext";
 
 
 
-const itemsPerPage = 12; // Número de elementos por página
+const itemsPerPage = 12; 
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -28,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidadesComponentProps) => {
 
-    const {  setEspecialidadSeleccionada} = useContext(AuthContext);
+      const {  setEspecialidadSeleccionada} = useContext(AuthContext);
 
     const [currentPage, setCurrentPage] = useState(1);
     const especialidadService = new EspecialidadService();
@@ -132,3 +132,5 @@ export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidades
 
     );
 }
+
+

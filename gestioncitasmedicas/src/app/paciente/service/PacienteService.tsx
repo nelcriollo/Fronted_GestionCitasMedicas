@@ -30,7 +30,7 @@ class PacienteService {
     
       async updatePaciente(paciente:Paciente):Promise<Paciente> {
         try {
-          const response = await axiosInstance.post('/', paciente, {
+          const response = await axiosInstance.put('/', paciente, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -54,9 +54,9 @@ class PacienteService {
         }
       }
 
-      async buscarPaciente(id:number):Promise<Paciente> {
+      async buscarPacientePorDni(dni:string):Promise<Paciente> {
         try {
-          const response = await axiosInstance.get('/'+ id, {
+          const response = await axiosInstance.get('/buscarDni/'+ dni, {
             headers: {
               'Content-Type': 'application/json',
             },

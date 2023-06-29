@@ -22,16 +22,18 @@ export default function Home() {
   return (
     <Box
       sx={{
-        width: 450,
-        height: 300,
-        marginLeft: 10,
-        marginTop: 0,
-        padding: 5,
+        width: 500,
+        marginLeft: 5,
+        marginTop: 12,
+        padding: 10,
+        boxShadow:15,
+        borderTopRightRadius:75,
+        borderBottomLeftRadius:75,
         marginBottom: 0,
-        backgroundColor: '#ff7043',
+        backgroundColor: 'darkorange',
         '&:hover': {
-          backgroundColor: '#ff8a65',
-          opacity: [0.9, 0.8, 0.7],
+          backgroundColor: 'darksalmon',
+          opacity: [0.75],
         },
       }}
     >

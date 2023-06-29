@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { Avatar, Button, Pagination, makeStyles } from "@mui/material";
+import { Avatar, Button, Pagination } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import HorarioService from "@/app/Horario/service/HorarioService";
@@ -12,7 +12,7 @@ import Horario from "@/app/Horario/model/Horario";
 import { deepPurple } from "@mui/material/colors";
 import { AuthContext } from "@/app/AuthContext";
 import Especialidad from "@/app/especialidades/model/Especialidad";
-
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 
 interface ListHorariosMedicosComponentProps {
@@ -45,17 +45,18 @@ const buttonStyles = {
 
 export const ListHorariosMedicosComponent = ({ onNextStep, onPreviousStep }: ListHorariosMedicosComponentProps) => {
 
-  const { especialidadSeleccionada, setEspecialidadSeleccionada } = useContext(AuthContext);
+  const { especialidadSeleccionada, setEspecialidadSeleccionada,horarioSeleccionado, setHorarioSeleccionado} = useContext(AuthContext);
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); 
   const horarioService = new HorarioService();
-  const [selectedHorario, setSelectedHorario] = useState<Horario | null>(null);
-
+  //const { horarioSeleccionado, setHorarioSeleccionado } = useContext(AuthContext);
   const [horarios, setHorarios] = useState<Horario[]>([]);
 
   const handleHorarioClick = (horario: Horario) => {
-    setSelectedHorario(horario);
-    console.log('Horario seleccionado:', horario);
+    const horarioSeleccionado = { ...horario, medico: { ...horario.medico } };
+    setHorarioSeleccionado(horarioSeleccionado);
+    console.log('Horario seleccionado:', horarioSeleccionado);
     onNextStep();
   };
 
@@ -67,8 +68,8 @@ export const ListHorariosMedicosComponent = ({ onNextStep, onPreviousStep }: Lis
   const endIndex = startIndex + itemsPerPage;
 
   const medicosEspecialidad = especialidadSeleccionada
-    ? horarios.filter((horario) => horario.especialidad.idEspecialidad === especialidadSeleccionada.idEspecialidad)
-    : [];
+  ? horarios.filter((horario) => horario.especialidad.idEspecialidad === especialidadSeleccionada.idEspecialidad && horario.estado === 0)
+  : [];
 console.log("medicos con las especialidades",medicosEspecialidad);
 
   const horariosPaginados = medicosEspecialidad.slice(startIndex, endIndex);
@@ -91,13 +92,19 @@ console.log("medicos con las especialidades",medicosEspecialidad);
   function mostrarMedicosConHorarios(medicosEspecialidad: Horario[]) {
     const medicosAgrupados: { [key: string]: { medico: any, fechas: { [key: string]: any[] } } } = {};
   
-    medicosEspecialidad.forEach((horario) => {
+    medicosEspecialidad
+    .filter((horario) => horario.estado === 0)
+    .forEach((horario) => {
       const medico = horario.medico;
       const fechaRegistro = horario.fechaRegistro.join('/');
   
       if (!medicosAgrupados[medico.idMedico]) {
         medicosAgrupados[medico.idMedico] = {
-          medico: medico,
+          medico: {
+            idMedico: medico.idMedico,
+            nombre: medico.nombre,
+            apellidos: medico.apellidos,
+          },
           fechas: {},
         };
       }
@@ -110,6 +117,11 @@ console.log("medicos con las especialidades",medicosEspecialidad);
         horaInicio: horario.horaInicio,
         horaFin: horario.horaFin,
         idHorario: horario.idHorario,
+        idMedico: medico.idMedico,
+      nombre: medico.nombre,
+      apellidos: medico.apellidos,
+      medico: { ...medico }, 
+    
       });
     });
   
@@ -127,7 +139,7 @@ console.log("medicos con las especialidades",medicosEspecialidad);
             console.log(`Fecha de registro: ${fecha}`);
             console.log('Horarios:');
             fechas[fecha].forEach((horario: any) => {
-              console.log(`- ${horario.horaInicio} - ${horario.idHorario}`);
+              console.log(`- ${horario.horaInicio} - ${horario.idHorario} `);
             });
             console.log('---');
           }
@@ -254,9 +266,24 @@ return (
       shape="rounded"
       sx={{ mt: 2, justifyContent: 'center' }}
     />
-    <Button onClick={onPreviousStep}>regresar</Button>
+    <Grid container spacing={2} style={{ margin: 2, background:'',justifyContent:'center' }}>
+      <Grid item xs={10} style={{ display: 'flex', justifyContent: 'end',background:'' }}>
+        <Button
+          onClick={onPreviousStep}
+          type="submit"
+          variant="contained"
+          color="secondary"
+          sx={{ padding: '5px', backgroundColor: 'black' }}
+          startIcon={<SkipPreviousIcon />}
+        >
+          Regresar
+        </Button>
+      </Grid>
+    </Grid>
+
   </Grid>
 </Grid>
 
   );
 }
+
