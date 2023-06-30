@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import "./globals.css";
 import { HeaderAppBar } from "./header";
 import { AuthProvider } from "./AuthContext";

@@ -9,7 +9,7 @@ import { AuthContext } from '@/app/AuthContext';
 
 export const LoginComponent = () => {
 
-  const { loggedIn, setLoggedIn, setLoginResponse } = useContext(AuthContext);
+  const {setLoggedIn, setLoginResponse } = useContext(AuthContext);
   const router = useRouter();
   const usuarioService = new UsuarioService();
   const [credentials, setCredentials] = useState<AuthenCredentials>({
@@ -19,20 +19,17 @@ export const LoginComponent = () => {
 
 const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
-
   try {
+    
     const response =  await usuarioService.login(credentials);
 
-   if(response){ 
-    router.push('/');
     setLoggedIn(true);
-    setLoginResponse(response.data);
-    console.info("logue exitoso!, estdo",loggedIn);
-    console.info(response);
-   }else router.push('usuarios/login');
+    setLoginResponse(response);
+    router.push('/');
+
   } catch (error) {
-    // Manejar errores de la solicitud
-    console.error(error);
+    console.error('ocurrio un error',error);
+    router.push('usuarios/login');
   }
 };
 

@@ -1,5 +1,5 @@
 
-import { Medico } from '../model/Medico';
+import Medico from '../model/Medico';
 import axiosInstance from './AxiosInstance';
 
 class MedicoService {

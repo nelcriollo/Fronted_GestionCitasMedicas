@@ -8,8 +8,8 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { AuthContext } from "@/app/AuthContext";
-import { RegistrarPacienteComponent } from "@/app/paciente/components/Paciente";
 import { RegistrarReservaComponent } from "../components/RegistrarReserva";
+import { BuscarPacienteComponent } from "@/app/paciente/components/buscarPaciente";
 
 
 
@@ -44,7 +44,7 @@ export default  function Reservas(){
          especialidadSeleccionada={especialidadSeleccionada}
          onNextStep={handleNextStep} onPreviousStep={handlePreviousStep}/>
       case 2:
-          return <RegistrarPacienteComponent
+          return <BuscarPacienteComponent
           onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} />;
           case 3:
           return <RegistrarReservaComponent

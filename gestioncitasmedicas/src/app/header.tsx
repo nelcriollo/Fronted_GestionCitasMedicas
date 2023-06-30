@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import { AuthContext } from './AuthContext';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -27,13 +27,6 @@ const settings = [{nombre:'Perfil',ruta:'/perfil'}, {nombre:'citas',ruta:'/reser
 export function HeaderAppBar() {
 
   const { loggedIn, setLoggedIn } = useContext(AuthContext);
-
-/*useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    setLoggedIn(true);
-  }
-}, []);*/
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -54,6 +47,7 @@ export function HeaderAppBar() {
     setAnchorElUser(null);
   };
 
+  console.log('estado del login en el header',loggedIn);
 
   return (
     <AppBar position="static" sx={{ mb:5 }}>

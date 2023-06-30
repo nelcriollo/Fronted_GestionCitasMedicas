@@ -11,7 +11,8 @@ interface RegistrarReservaComponentProps {
     onPreviousStep: () => void;
 }
 
-export const RegistrarReservaComponent = ({ onNextStep, onPreviousStep
+export const RegistrarReservaComponent = ({ onNextStep,
+  onPreviousStep
 }: RegistrarReservaComponentProps) => {
   const { especialidadSeleccionada, horarioSeleccionado, pacienteRegistrado,loginResponse } = useContext(AuthContext);
   const reservaService = new ReservaService();
@@ -84,7 +85,7 @@ export const RegistrarReservaComponent = ({ onNextStep, onPreviousStep
               fullWidth
               value={reserva.usuario.idUsuario}
               onChange={(event) =>
-                setReserva({ ...reserva, usuario: { ...reserva.usuario, idUsuario: event.target.value } })
+                setReserva({ ...reserva, usuario: { ...reserva.usuario, idUsuario: parseInt( event.target.value) } })
               }
               sx={{ marginBottom: '16px' }}
             />
