@@ -1,6 +1,6 @@
 "use client";
 import * as React from 'react';
-import { Box, Button, Link } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -22,18 +22,17 @@ export default function Home() {
   return (
     <Box
       sx={{
-        width: 500,
-        marginLeft: 5,
+        width: 400,
+        marginLeft: 0,
         marginTop: 12,
         padding: 10,
         boxShadow:15,
-        borderTopRightRadius:75,
-        borderBottomLeftRadius:75,
+        borderTopRightRadius:65,
+        borderBottomRightRadius:65,
         marginBottom: 0,
-        backgroundColor: 'darkorange',
+        background: 'primary',
         '&:hover': {
-          backgroundColor: 'darksalmon',
-          opacity: [0.75],
+          background: 'linear-gradient(90deg, rgba(145,62,27,0.8324579831932774) 0%, rgba(141,135,124,0.2554271708683473) 0%, rgba(103,169,199,1) 0%, rgba(120,186,218,0.7232142857142857) 41%, rgba(145,203,246,1) 99%)',
         },
       }}
     >

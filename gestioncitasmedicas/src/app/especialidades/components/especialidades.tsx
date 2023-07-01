@@ -28,16 +28,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidadesComponentProps) => {
 
-      const {  setEspecialidadSeleccionada} = useContext(AuthContext);
-
+    const {  setEspecialidadSeleccionada} = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
-    const especialidadService = new EspecialidadService();
     const [especialidades, setEspecialidades] = useState<Especialidad[]>([]);
+    const especialidadService = new EspecialidadService();
   
 
     const handleEspecialidadClick = (especialidad:Especialidad) => {
-  
-        console.log('Especialidad seleccionada:', especialidad);
         // almacenar la especialidad seleccionada en el estado
         setEspecialidadSeleccionada(especialidad);
        onNextStep();
@@ -57,18 +54,21 @@ export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidades
     
       
   
-    useEffect(() => {
+  
+
       const obtenerEspecialidades = async () => {
         try {
+
           const response = await especialidadService.getEspecialidades();
           setEspecialidades(response);
+
         } catch (error) {
           console.error(error);
         }
       };
   
       obtenerEspecialidades();
-    }, []);
+
 
     return (
 <Grid container spacing={2} justifyContent="center">

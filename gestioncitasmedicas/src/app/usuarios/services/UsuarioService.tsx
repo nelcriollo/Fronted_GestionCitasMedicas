@@ -8,9 +8,10 @@ class UsuarioService {
   async login(credentials:AuthenCredentials):Promise<LoginResponse> {
    try {
       const response = (await axiosInstance.post('/login', credentials, {}));
+     
       const token = response.data.token;
       localStorage.setItem("token", token);
-    console.log(response.status);
+    
       return response.data;
     } catch (error) {
       throw new Error('Error al loguearse: ' + error);
