@@ -1,3 +1,4 @@
+import Especialidad from "@/app/especialidades/model/Especialidad";
 import Medico from "@/app/medicos/model/Medico";
 
 export default class Horario{
@@ -7,10 +8,10 @@ fechaRegistro:Date;
  horaFin:string;
  estado:number;
  medico:Medico;
-especialidad:any;
+especialidad:Especialidad;
 
 constructor( idHorario:number, fechaRegistro:Date, horaInicio:string,
-     fechaFin:string, estado:number, medico:Medico, especialidad:any){
+     fechaFin:string, estado:number, medico:Medico, especialidad:Especialidad){
     
         this.idHorario = idHorario;
         this.fechaRegistro = fechaRegistro;

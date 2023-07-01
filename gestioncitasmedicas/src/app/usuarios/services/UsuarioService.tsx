@@ -11,7 +11,7 @@ class UsuarioService {
      
       const token = response.data.token;
       localStorage.setItem("token", token);
-    
+      console.log(response.data);
       return response.data;
     } catch (error) {
       throw new Error('Error al loguearse: ' + error);

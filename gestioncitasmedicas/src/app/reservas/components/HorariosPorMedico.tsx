@@ -48,17 +48,8 @@ export const ListHorariosMedicosComponent = ({ onNextStep, onPreviousStep }: Lis
   const { especialidadSeleccionada, setEspecialidadSeleccionada,horarioSeleccionado, setHorarioSeleccionado} = useContext(AuthContext);
   
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null); 
   const horarioService = new HorarioService();
-  //const { horarioSeleccionado, setHorarioSeleccionado } = useContext(AuthContext);
   const [horarios, setHorarios] = useState<Horario[]>([]);
-
-  const handleHorarioClick = (horario: Horario) => {
-    const horarioSeleccionado = { ...horario, medico: { ...horario.medico } };
-    setHorarioSeleccionado(horarioSeleccionado);
-    console.log('Horario seleccionado:', horarioSeleccionado);
-    onNextStep();
-  };
 
   const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
@@ -67,20 +58,13 @@ export const ListHorariosMedicosComponent = ({ onNextStep, onPreviousStep }: Lis
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const medicosEspecialidad = especialidadSeleccionada
-  ? horarios.filter((horario) => horario.especialidad.idEspecialidad === especialidadSeleccionada.idEspecialidad && horario.estado === 0)
-  : [];
-console.log("medicos con las especialidades",medicosEspecialidad);
-
-  const horariosPaginados = medicosEspecialidad.slice(startIndex, endIndex);
-
-
-
   useEffect(() => {
     const obtenerHorarios = async () => {
       try {
         const response = await horarioService.getHorarios();
         setHorarios(response);
+        console.log(response);
+        
       } catch (error) {
         console.error(error);
       }
@@ -88,6 +72,23 @@ console.log("medicos con las especialidades",medicosEspecialidad);
 
     obtenerHorarios();
   }, []);
+
+
+  const medicosEspecialidad = especialidadSeleccionada
+  ? horarios.filter((horario) => horario.especialidad.idEspecialidad === especialidadSeleccionada.idEspecialidad && horario.estado === 0)
+  : [];
+  
+console.log("medicos con las especialidades",medicosEspecialidad);
+
+  const horariosPaginados = medicosEspecialidad.slice(startIndex, endIndex);
+
+  const handleHorarioClick = (horario: Horario) => {
+    const horarioSeleccionado = { ...horario, medico: { ...horario.medico } };
+    setHorarioSeleccionado(horarioSeleccionado);
+    console.log('Horario seleccionado:', horarioSeleccionado);
+    onNextStep();
+  };
+
 
   function mostrarMedicosConHorarios(medicosEspecialidad: Horario[]) {
     const medicosAgrupados: { [key: string]: { medico: any, fechas: { [key: string]: any[] } } } = {};
@@ -117,10 +118,12 @@ console.log("medicos con las especialidades",medicosEspecialidad);
         horaInicio: horario.horaInicio,
         horaFin: horario.horaFin,
         idHorario: horario.idHorario,
+        fechaRegistro: horario.fechaRegistro,
         idMedico: medico.idMedico,
-      nombre: medico.nombre,
+       nombre: medico.nombre,
       apellidos: medico.apellidos,
       medico: { ...medico }, 
+      especialidad:horario.especialidad
     
       });
     });

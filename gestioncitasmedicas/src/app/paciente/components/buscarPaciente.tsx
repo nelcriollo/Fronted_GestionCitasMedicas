@@ -1,11 +1,12 @@
 "use client"
 import PacienteService from '../service/PacienteService';
-import {  useContext, useState } from 'react';
+import {  useContext, useEffect, useState } from 'react';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import Paciente from '../model/Paciente';
 import { AuthContext } from '@/app/AuthContext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import { RegistrarPacienteDialog } from './registrarPaciente';
+
 
 interface BuscarPacienteComponentProps {
   onNextStep: () => void;
@@ -18,9 +19,10 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
     const [nroDocumentoBuscar, setNroDocumentoBuscar] = useState("");
     const [pacienteEncontrado, setPacienteEncontrado] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const [nuevoDocumentoRegistrado, setNuevoDocumentoRegistrado] = useState("");
   
 
-    const { especialidadSeleccionada, horarioSeleccionado,setPacienteRegistrado } = useContext(AuthContext);
+    const { especialidadSeleccionada, horarioSeleccionado,pacienteRegistrado,setPacienteRegistrado } = useContext(AuthContext);
     
 
     const [paciente, setPaciente] = useState<Paciente>({
@@ -33,8 +35,6 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
         telefono: "",
         estado    : 0
       });
-   
-
 
         const obtenerPaciente = async (dni:string) => {
           try {
@@ -45,6 +45,7 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
             setPaciente({ ...response, fechaNacimiento: parsedFechaNacimiento });
             setPacienteEncontrado(true);
             setPacienteRegistrado(response);
+            console.log("PACIENTE ENCONTRADO",response);
            
         } catch (error) {
             console.error(error);
@@ -52,10 +53,26 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
             setPacienteRegistrado(null);
           }
         };
+
+        const handleLimpiarDocumentoBuscar = () =>{
+          setNroDocumentoBuscar("");
+        };
     
         const handleOpenDialog = () => {
           setOpenDialog(true);
+          handleLimpiarDocumentoBuscar();
         };
+
+        const handleNuevoDocumentoRegistrado = (documento: string) => {
+          setNuevoDocumentoRegistrado(documento);
+          console.log("Registro exitosoe:", documento);
+        };
+  
+        useEffect(() => {
+          if (nuevoDocumentoRegistrado) {
+            obtenerPaciente(nuevoDocumentoRegistrado);
+          }
+        }, [nuevoDocumentoRegistrado]);
 
   return (
 
@@ -190,7 +207,8 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
                   color="primary"
                   fullWidth
                   sx={{ marginTop: '12px' }}
-                  onClick={handleOpenDialog}
+                  onClick={handleOpenDialog}  //mostramos el dialog
+                  
                 >
                   Registrarse
                 </Button>          
@@ -198,7 +216,9 @@ export  const BuscarPacienteComponent = ({ onNextStep, onPreviousStep }: BuscarP
           )}
 
             {openDialog && (
-                  <RegistrarPacienteDialog open={openDialog} onClose={() => setOpenDialog(false)} />
+                  <RegistrarPacienteDialog open={openDialog}
+                   onClose={() => setOpenDialog(false)} 
+                    onRegistroExitoso={handleNuevoDocumentoRegistrado}  />
              )}
         </Container>
         </Grid>
