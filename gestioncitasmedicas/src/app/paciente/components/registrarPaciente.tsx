@@ -1,5 +1,5 @@
 "use client"
-import * as React from 'react';
+import {  useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -7,9 +7,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Paciente from '../model/Paciente';
-import { useState } from 'react';
 import PacienteService from '../service/PacienteService';
 import { Grid } from '@mui/material';
+import { AuthContext } from '@/app/AuthContext';
 
 interface RegistrarPacienteDialogProps {
     open: boolean;
@@ -19,6 +19,9 @@ interface RegistrarPacienteDialogProps {
 
 export const  RegistrarPacienteDialog = ({ open, onClose,onRegistroExitoso }: RegistrarPacienteDialogProps) => {
 
+  const { setPacienteRegistrado } = useContext(AuthContext);
+    
+    
 const pacienteService = new PacienteService();     
 const [paciente, setPaciente] = useState<Paciente>({
     idPaciente : 0,
@@ -46,8 +49,9 @@ const [paciente, setPaciente] = useState<Paciente>({
           const nuevoPaciente = response;
           console.log(nuevoPaciente);
           setPaciente(nuevoPaciente);
+          setPacienteRegistrado(nuevoPaciente)
           handleClose();  
-          //onNextStep();  
+       
         } catch (error) {
           console.error(error);
         }
