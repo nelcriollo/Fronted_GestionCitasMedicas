@@ -5,19 +5,19 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Paciente from '../model/Paciente';
 import { useState } from 'react';
 import PacienteService from '../service/PacienteService';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
 interface RegistrarPacienteDialogProps {
     open: boolean;
     onClose: () => void;
+    onRegistroExitoso: (documento: string) => void;
   }
 
-export const  RegistrarPacienteDialog = ({ open, onClose }: RegistrarPacienteDialogProps) => {
+export const  RegistrarPacienteDialog = ({ open, onClose,onRegistroExitoso }: RegistrarPacienteDialogProps) => {
 
 const pacienteService = new PacienteService();     
 const [paciente, setPaciente] = useState<Paciente>({
@@ -30,13 +30,10 @@ const [paciente, setPaciente] = useState<Paciente>({
     telefono: "",
     estado    : 0
   });
-
-    
-    const handleClickOpen = () => {
-        onClose(); 
-      };
     
       const handleClose = () => {
+        onRegistroExitoso(paciente.nroDocumento);
+        console.log(paciente.nroDocumento);
         onClose();
       };
 
@@ -49,18 +46,19 @@ const [paciente, setPaciente] = useState<Paciente>({
           const nuevoPaciente = response;
           console.log(nuevoPaciente);
           setPaciente(nuevoPaciente);
+          handleClose();  
           //onNextStep();  
         } catch (error) {
           console.error(error);
         }
       };
 
+
+
     
       return (
         <div>
-          <Button variant="outlined" onClick={handleClickOpen}>
-            Open form dialog
-          </Button>
+    
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Registro de Paciente</DialogTitle>
             <DialogContent>
@@ -89,7 +87,7 @@ const [paciente, setPaciente] = useState<Paciente>({
                 type="date"
                 label="fechaNacimiento"
                 fullWidth
-                value={paciente.fechaNacimiento ? paciente.fechaNacimiento.toISOString().split('T')[0] : ''}
+                value={paciente.fechaNacimiento instanceof Date && !isNaN(paciente.fechaNacimiento.getTime()) ? paciente.fechaNacimiento.toISOString().split('T')[0] : new Date()}
                 onChange={(event) => setPaciente({ ...paciente, fechaNacimiento: new Date(event.target.value) })}
                 sx={{ marginBottom: '16px' }}/>
               </Grid>
@@ -126,19 +124,16 @@ const [paciente, setPaciente] = useState<Paciente>({
               type="submit"
               variant="contained"
               color="primary"
-              fullWidth
-              sx={{ marginTop: '12px' }}
+              sx={{ marginTop: '12px' }}          
+
             >
               Registrarse
             </Button>
             </Grid>
-          </form>
-        
-            
+          </form>       
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={handleClose}>Registrar</Button>
+              <Button  onClick={handleClose}>Cancel</Button>           
             </DialogActions>
           </Dialog>
         </div>

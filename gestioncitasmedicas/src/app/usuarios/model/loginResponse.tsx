@@ -1,6 +1,8 @@
 export default interface LoginResponse {
-    data: any; 
-    headers: {
-      authorization: string; 
-    };
+      message: string;
+      token: string;
+      username:string;
+      idUsuario:number;
+
+
   }

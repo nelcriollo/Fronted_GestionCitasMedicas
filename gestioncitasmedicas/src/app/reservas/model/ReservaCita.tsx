@@ -1,3 +1,5 @@
+import Horario from "@/app/Horario/model/Horario";
+import Paciente from "@/app/paciente/model/Paciente";
 
 export default class ReservaCita{
 

@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, FC, useEffect, Dispatch, SetStateAction, useMemo } from 'react';
+import { createContext, useState, ReactNode, FC, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
 import Especialidad from './especialidades/model/Especialidad';
 import Horario from './Horario/model/Horario';
 import Paciente from './paciente/model/Paciente';
@@ -55,6 +55,15 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
   }, [loggedIn, especialidadSeleccionada, horarioSeleccionado,pacienteRegistrado,loginResponse]);
 
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (token) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
+  
   return (
     <AuthContext.Provider value={contextValue}>
       {children}

@@ -28,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidadesComponentProps) => {
 
-    const {  setEspecialidadSeleccionada} = useContext(AuthContext);
+    const { especialidadSeleccionada, setEspecialidadSeleccionada} = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
     const [especialidades, setEspecialidades] = useState<Especialidad[]>([]);
     const especialidadService = new EspecialidadService();
@@ -37,6 +37,7 @@ export  const ListEspecialidadesComponent =  ({ onNextStep }: ListEspecialidades
     const handleEspecialidadClick = (especialidad:Especialidad) => {
         // almacenar la especialidad seleccionada en el estado
         setEspecialidadSeleccionada(especialidad);
+        console.log(especialidadSeleccionada);
        onNextStep();
       };
 
