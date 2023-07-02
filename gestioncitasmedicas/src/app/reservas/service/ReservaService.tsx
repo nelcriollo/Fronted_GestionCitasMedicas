@@ -54,19 +54,6 @@ class ReservaCtiaService {
           throw new Error('Error al eliminar la reserva: ' + error);
         }
       }
-
-      async buscarPacientePorId(dni:string):Promise<ReservaCita> {
-        try {
-          const response = await axiosInstance.get('/'+ dni, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          return response.data;
-        } catch (error) {
-          throw new Error('Error al obtener la Reserva: ' + error);
-        }
-      }
     
     }
 export default ReservaCtiaService;

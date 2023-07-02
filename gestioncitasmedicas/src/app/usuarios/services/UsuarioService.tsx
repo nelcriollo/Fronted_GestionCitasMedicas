@@ -1,3 +1,4 @@
+import ReservasUsuario from '@/app/reservas/model/ReservasUsuario';
 import  Usuario  from '../model/Usuario';
 import  AuthenCredentials  from '../model/UsuarioLogin';
 import LoginResponse from '../model/loginResponse';
@@ -18,6 +19,19 @@ class UsuarioService {
     }
   }
 
+  async obtenerCitasPorUsuario(id:number):Promise<ReservasUsuario> {
+    try {
+      const response = await axiosInstance.get('/usuariosReservas/'+ id, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      throw new Error('Error al obtener las Reservas: ' + error);
+    }
+  }
 
   async getUsers(): Promise<Usuario[]> {
     try {
