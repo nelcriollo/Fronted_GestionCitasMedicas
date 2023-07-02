@@ -78,6 +78,7 @@ export  const RegistrarReservaComponent = ({ onNextStep, onPreviousStep }: Regis
         useEffect(() => {
           if (nuevoDocumentoRegistrado) {
             obtenerPaciente(nuevoDocumentoRegistrado);
+           
           }
         }, [nuevoDocumentoRegistrado]);
 
